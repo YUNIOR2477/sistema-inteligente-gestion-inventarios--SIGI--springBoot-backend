@@ -1,6 +1,8 @@
 package com.sigi.persistence.repository;
 
+import com.sigi.persistence.entity.Order;
 import com.sigi.persistence.entity.OrderLine;
+import com.sigi.persistence.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,4 +27,8 @@ public interface OrderLineRepository extends JpaRepository<OrderLine, UUID> {
     Optional<OrderLine> findByIdAndActiveFalse(UUID id);
 
     List<OrderLine> findByOrderId(UUID orderId);
+
+    boolean existsByOrderAndProductAndLot(Order order, Product p, String lot);
+
+    List<OrderLine> findByOrder(Order order);
 }

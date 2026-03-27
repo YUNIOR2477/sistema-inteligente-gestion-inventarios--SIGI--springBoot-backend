@@ -1,12 +1,16 @@
 package com.sigi.persistence.repository;
 
+import com.sigi.persistence.entity.Inventory;
 import com.sigi.persistence.entity.Movement;
+import com.sigi.persistence.entity.Order;
+import com.sigi.persistence.entity.Product;
 import com.sigi.persistence.enums.MovementType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,4 +34,5 @@ public interface MovementRepository extends JpaRepository<Movement, UUID> {
 
     Optional<Movement> findByIdAndActiveFalse(UUID id);
 
+    boolean existsByInventoryAndProductAndOrderAndTypeAndQuantity(Inventory inv, Product p, Order order, MovementType type, BigDecimal qty);
 }

@@ -1,6 +1,8 @@
 package com.sigi.persistence.repository;
 
 import com.sigi.persistence.entity.Inventory;
+import com.sigi.persistence.entity.Product;
+import com.sigi.persistence.entity.Warehouse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -50,4 +52,6 @@ public interface InventoryRepository extends JpaRepository<Inventory, UUID> {
     );
 
     Optional<Inventory> findByIdAndActiveFalse(UUID id);
+
+    boolean existsByProductAndWarehouseAndLot(Product p, Warehouse w, String lot);
 }

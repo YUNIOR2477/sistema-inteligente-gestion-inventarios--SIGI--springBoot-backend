@@ -23,5 +23,8 @@ public interface DispatcherRepository extends JpaRepository<Dispatcher, UUID> {
 
     Optional<Dispatcher> findByIdAndActiveFalse(UUID id);
 
+    boolean existsByIdentification(String identification);
+
+    boolean existsByEmail(String email);
 }
 

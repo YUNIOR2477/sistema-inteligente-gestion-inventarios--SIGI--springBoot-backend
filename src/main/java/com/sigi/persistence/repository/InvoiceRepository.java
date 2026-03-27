@@ -1,6 +1,7 @@
 package com.sigi.persistence.repository;
 
 import com.sigi.persistence.entity.Invoice;
+import com.sigi.persistence.entity.Order;
 import com.sigi.persistence.enums.InvoiceStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,4 +29,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, UUID> {
 
     Optional<Invoice> findByOrderId(UUID orderId);
 
+    boolean existsByOrder(Order order);
+
+    boolean existsByNumber(String number);
 }

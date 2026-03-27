@@ -34,4 +34,5 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     Optional<Product> findByIdAndActiveFalse(UUID id);
 
+    boolean existsByBarcode(String barcode);
 }

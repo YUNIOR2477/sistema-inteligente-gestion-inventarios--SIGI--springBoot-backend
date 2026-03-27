@@ -23,4 +23,8 @@ public interface ClientRepository extends JpaRepository<Client, UUID> {
     Page<Client> findByActiveFalse(Pageable pageable);
 
     Optional<Client> findByIdAndActiveFalse(UUID id);
+
+    boolean existsByIdentification(String identification);
+
+    boolean existsByEmail(String email);
 }
