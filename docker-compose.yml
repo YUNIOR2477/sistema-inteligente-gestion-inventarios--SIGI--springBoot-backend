@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    container_name: sigi-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sigi_db
+      MYSQL_USER: sigi
+      MYSQL_PASSWORD: sigi123
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: sigi-backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/sigi_db
+      SPRING_DATASOURCE_USERNAME: sigi
+      SPRING_DATASOURCE_PASSWORD: sigi123
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql_data:
