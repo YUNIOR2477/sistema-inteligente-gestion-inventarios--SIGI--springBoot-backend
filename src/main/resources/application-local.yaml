@@ -1,22 +1,21 @@
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: jdbc:mysql://localhost:3306/inventorydb
+    username: root
+    password: 2477
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+      ddl-auto: create-drop
     show-sql: true
-    database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.MySQLDialect}
 
-application:
-  name: sigi-backend
+    application:
+    name: sigi-backend
 
 jwt:
-  secret: ${JWT_SECRET:U3ByaW5nQm9vdC1TZWNyZXRLZXktMTIzIT8kQCM=}
+  secret: U3ByaW5nQm9vdC1TZWNyZXRLZXktMTIzIT8kQCM=
   access:
-    expiresSeconds: ${JWT_EXPIRES_SECONDS:5000}
+    expiresSeconds: 5000 # 15 min
 
 logging:
   pattern:
