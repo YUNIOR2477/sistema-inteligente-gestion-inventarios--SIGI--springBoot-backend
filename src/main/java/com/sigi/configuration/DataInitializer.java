@@ -33,6 +33,10 @@ public class DataInitializer {
     private final ProductRepository productRepository;
     private final InventoryRepository inventoryRepository;
     private final DispatcherRepository dispatcherRepository;
+    private final OrderRepository orderRepository;
+    private final OrderLineRepository orderLineRepository;
+    private final InvoiceRepository invoiceRepository;
+    private final MovementRepository movementRepository;
 
     private List<User> users = new ArrayList<>();
     private List<Client> clients = new ArrayList<>();
@@ -40,6 +44,9 @@ public class DataInitializer {
     private List<Product> products = new ArrayList<>();
     private List<Inventory> inventories = new ArrayList<>();
     private List<Dispatcher> dispatchers = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
+    private List<OrderLine> orderLines = new ArrayList<>();
+    private List<Invoice> invoices = new ArrayList<>();
 
 
     private Role getOrCreateRole(RoleList roleName) {
@@ -56,6 +63,10 @@ public class DataInitializer {
         createProductsIfNotExist();
         createDispatchersIfNotExist();
         createInventoriesIfNotExist();
+        createOrdersIfNotExist();
+        createOrderLinesIfNotExist();
+        createInvoicesIfNotExist();
+        createMovementsIfNotExist();
     }
 
     @Transactional
@@ -73,52 +84,53 @@ public class DataInitializer {
         Role roleDispatcher = getOrCreateRole(RoleList.ROLE_DISPATCHER);
 
         String rawPassword = "123456789";
+        String encodedPassword = passwordEncoder.encode(rawPassword);
 
         users = new ArrayList<>(List.of(
                 User.builder().name("Andrés").surname("Arias").phoneNumber("3104000001")
-                        .email("andres.arias@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleAdmin).active(true).build(),
+                        .email("andres.arias@sigi.com").password(encodedPassword).role(roleAdmin).active(true).build(),
 
                 User.builder().name("María").surname("López").phoneNumber("3104000002")
-                        .email("maria.lopez@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleWarehouse).active(true).build(),
+                        .email("maria.lopez@sigi.com").password(encodedPassword).role(roleWarehouse).active(true).build(),
 
                 User.builder().name("Juan").surname("Ramírez").phoneNumber("3104000003")
-                        .email("juan.ramirez@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleSeller).active(true).build(),
+                        .email("juan.ramirez@sigi.com").password(encodedPassword).role(roleSeller).active(true).build(),
 
                 User.builder().name("Catalina").surname("Pérez").phoneNumber("3104000004")
-                        .email("catalina.perez@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleAuditor).active(true).build(),
+                        .email("catalina.perez@sigi.com").password(encodedPassword).role(roleAuditor).active(true).build(),
 
                 User.builder().name("Diego").surname("Martínez").phoneNumber("3104000005")
-                        .email("diego.martinez@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleDispatcher).active(true).build(),
+                        .email("diego.martinez@sigi.com").password(encodedPassword).role(roleDispatcher).active(true).build(),
 
                 User.builder().name("Laura").surname("Gómez").phoneNumber("3104000006")
-                        .email("laura.gomez@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleSeller).active(true).build(),
+                        .email("laura.gomez@sigi.com").password(encodedPassword).role(roleSeller).active(true).build(),
 
                 User.builder().name("Carlos").surname("Rodríguez").phoneNumber("3104000007")
-                        .email("carlos.rodriguez@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleWarehouse).active(true).build(),
+                        .email("carlos.rodriguez@sigi.com").password(encodedPassword).role(roleWarehouse).active(true).build(),
 
                 User.builder().name("Paula").surname("Sánchez").phoneNumber("3104000008")
-                        .email("paula.sanchez@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleAdmin).active(true).build(),
+                        .email("paula.sanchez@sigi.com").password(encodedPassword).role(roleAdmin).active(true).build(),
 
                 User.builder().name("Santiago").surname("Vargas").phoneNumber("3104000009")
-                        .email("santiago.vargas@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleSeller).active(true).build(),
+                        .email("santiago.vargas@sigi.com").password(encodedPassword).role(roleSeller).active(true).build(),
 
                 User.builder().name("Valentina").surname("Cárdenas").phoneNumber("3104000010")
-                        .email("valentina.cardenas@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleAuditor).active(true).build(),
+                        .email("valentina.cardenas@sigi.com").password(encodedPassword).role(roleAuditor).active(true).build(),
 
                 User.builder().name("Felipe").surname("Castro").phoneNumber("3104000011")
-                        .email("felipe.castro@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleDispatcher).active(true).build(),
+                        .email("felipe.castro@sigi.com").password(encodedPassword).role(roleDispatcher).active(true).build(),
 
                 User.builder().name("Natalia").surname("Ríos").phoneNumber("3104000012")
-                        .email("natalia.rios@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleWarehouse).active(true).build(),
+                        .email("natalia.rios@sigi.com").password(encodedPassword).role(roleWarehouse).active(true).build(),
 
                 User.builder().name("Andrés Felipe").surname("Quintero").phoneNumber("3104000013")
-                        .email("andresf.quintero@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleAdmin).active(true).build(),
+                        .email("andresf.quintero@sigi.com").password(encodedPassword).role(roleAdmin).active(true).build(),
 
                 User.builder().name("Mónica").surname("Herrera").phoneNumber("3104000014")
-                        .email("monica.herrera@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleSeller).active(true).build(),
+                        .email("monica.herrera@sigi.com").password(encodedPassword).role(roleSeller).active(true).build(),
 
                 User.builder().name("Javier").surname("Córdoba").phoneNumber("3104000015")
-                        .email("javier.cordoba@sigi.com").password(passwordEncoder.encode(rawPassword)).role(roleDispatcher).active(true).build()));
+                        .email("javier.cordoba@sigi.com").password(encodedPassword).role(roleDispatcher).active(true).build()));
 
         List<User> toSave = new ArrayList<>();
         for (User u : users) {
@@ -454,4 +466,307 @@ public class DataInitializer {
             log.info("DataInitializer: no hay dispatchers nuevos para crear.");
         }
     }
+    @Transactional
+    private void createOrdersIfNotExist() {
+        long existing = orderRepository.count();
+        if (existing > 0) {
+            log.info("DataInitializer: orders ya existen (count={}), omitiendo inicialización de orders.", existing);
+            return;
+        }
+
+        if (this.clients == null || this.clients.isEmpty()) {
+            this.clients = clientRepository.findAll();
+        }
+        if (this.users == null || this.users.isEmpty()) {
+            this.users = userRepository.findAll();
+        }
+        if (this.warehouses == null || this.warehouses.isEmpty()) {
+            this.warehouses = warehouseRepository.findAll();
+        }
+        if (this.dispatchers == null || this.dispatchers.isEmpty()) {
+            this.dispatchers = dispatcherRepository.findAll();
+        }
+
+        if (clients.isEmpty() || users.isEmpty() || warehouses.isEmpty() || dispatchers.isEmpty()) {
+            log.warn("DataInitializer: faltan entidades para crear orders. clients={}, users={}, warehouses={}, dispatchers={}",
+                    clients.size(), users.size(), warehouses.size(), dispatchers.size());
+            return;
+        }
+
+         orders = new ArrayList<>();
+        int n = Math.min(10, clients.size());
+        for (int i = 0; i < n; i++) {
+            Client c = clients.get(i);
+            User u = users.get(i % users.size());
+            Warehouse w = warehouses.get(i % warehouses.size());
+            Dispatcher d = dispatchers.get(i % dispatchers.size());
+
+            BigDecimal total = BigDecimal.valueOf(10000 + (i * 5000));
+            boolean exists = orderRepository.existsByClientAndWarehouseAndDispatcherAndTotal(c, w, d, total);
+            if (exists) {
+                log.info("DataInitializer: order ya existe para client {} en warehouse {} con dispatcher {} y total {}, omitiendo.",
+                        c.getName(), w.getName(), d.getName(), total);
+                continue;
+            }
+
+            Order order = Order.builder()
+                    .client(c)
+                    .user(u)
+                    .warehouse(w)
+                    .dispatcher(d)
+                    .status(i % 3 == 0 ? OrderStatus.DRAFT : (i % 3 == 1 ? OrderStatus.CONFIRMED : OrderStatus.DELIVERED))
+                    .total(total)
+                    .active(true)
+                    .build();
+
+            orders.add(order);
+        }
+
+        if (!orders.isEmpty()) {
+            orderRepository.saveAll(orders);
+            log.info("DataInitializer: {} orders creados.", orders.size());
+        } else {
+            log.info("DataInitializer: no hay orders nuevos para crear.");
+        }
+    }
+    @Transactional
+    private void createOrderLinesIfNotExist() {
+        long existing = orderLineRepository.count();
+        if (existing > 0) {
+            log.info("DataInitializer: order lines ya existen (count={}), omitiendo inicialización de order lines.", existing);
+            return;
+        }
+
+        if (this.products == null || this.products.isEmpty()) {
+            this.products = productRepository.findAll();
+        }
+        if (this.inventories == null || this.inventories.isEmpty()) {
+            this.inventories = inventoryRepository.findAll();
+        }
+        List<Order> orders = orderRepository.findAll();
+
+        if (orders.isEmpty() || products.isEmpty() || inventories.isEmpty()) {
+            log.warn("DataInitializer: faltan orders/products/inventories para crear order lines. orders={}, products={}, inventories={}",
+                    orders.size(), products.size(), inventories.size());
+            return;
+        }
+
+        orderLines = new ArrayList<>();
+
+        for (int i = 0; i < orders.size(); i++) {
+            Order order = orders.get(i);
+            int linesCount = 1 + (i % 3);
+            for (int j = 0; j < linesCount; j++) {
+                Product p = products.get((i + j) % products.size());
+                Inventory inv = inventories.stream()
+                        .filter(it -> it.getProduct().getSku().equals(p.getSku()))
+                        .findFirst()
+                        .orElse(inventories.get((i + j) % inventories.size())); // fallback
+
+                String lot = inv.getLot() != null ? inv.getLot() : "LOT-" + p.getSku();
+
+                boolean exists = orderLineRepository.existsByOrderAndProductAndLot(order, p, lot);
+                if (exists) {
+                    log.info("DataInitializer: orderLine ya existe para order {} product {} lot {}, omitiendo.",
+                            order.getId(), p.getSku(), lot);
+                    continue;
+                }
+
+                BigDecimal qty = BigDecimal.valueOf(1 + ((i + j) % 10));
+                BigDecimal unitPrice = p.getPrice() != null ? p.getPrice() : BigDecimal.ZERO;
+
+                OrderLine line = OrderLine.builder()
+                        .order(order)
+                        .product(p)
+                        .inventory(inv)
+                        .lot(lot)
+                        .quantity(qty)
+                        .unitPrice(unitPrice)
+                        .active(true)
+                        .build();
+
+                orderLines.add(line);
+
+                order.setTotal(order.getTotal().add(unitPrice.multiply(new BigDecimal(qty.toString()))));
+            }
+        }
+
+        if (!orderLines.isEmpty()) {
+            orderLineRepository.saveAll(orderLines);
+            orderRepository.saveAll(orderRepository.findAllById(
+                    orderLines.stream().map(ol -> ol.getOrder().getId()).distinct().toList()
+            ));
+            log.info("DataInitializer: {} order lines creadas.", orderLines.size());
+        } else {
+            log.info("DataInitializer: no hay order lines nuevas para crear.");
+        }
+    }
+
+    @Transactional
+    private void createInvoicesIfNotExist() {
+        long existing = invoiceRepository.count();
+        if (existing > 0) {
+            log.info("DataInitializer: invoices ya existen (count={}), omitiendo inicialización de invoices.", existing);
+            return;
+        }
+
+        List<Order> orders = orderRepository.findAll();
+        if (orders.isEmpty()) {
+            log.warn("DataInitializer: no hay orders para generar invoices.");
+            return;
+        }
+
+       invoices = new ArrayList<>();
+        int sequence = 1;
+
+        for (Order order : orders) {
+            boolean invoiceExists = invoiceRepository.existsByOrder(order);
+            if (invoiceExists) {
+                log.info("DataInitializer: invoice ya existe para order {}, omitiendo.", order.getId());
+                continue;
+            }
+
+            List<OrderLine> lines = orderLineRepository.findByOrder(order);
+            if (lines == null || lines.isEmpty()) {
+                log.info("DataInitializer: order {} no tiene líneas, omitiendo invoice.", order.getId());
+                continue;
+            }
+
+            BigDecimal subtotal = lines.stream()
+                    .map(l -> l.getUnitPrice().multiply(new BigDecimal(l.getQuantity().toString())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            BigDecimal taxRate = BigDecimal.valueOf(0.16);
+            BigDecimal tax = subtotal.multiply(taxRate).setScale(2, BigDecimal.ROUND_HALF_UP);
+            BigDecimal total = subtotal.add(tax).setScale(2, BigDecimal.ROUND_HALF_UP);
+
+            String year = String.valueOf(LocalDate.now().getYear());
+            String number;
+            do {
+                number = String.format("INV-%s-%03d", year, sequence++);
+            } while (invoiceRepository.existsByNumber(number));
+
+            Invoice invoice = Invoice.builder()
+                    .number(number)
+                    .order(order)
+                    .client(order.getClient())
+                    .subtotal(subtotal.setScale(2, BigDecimal.ROUND_HALF_UP))
+                    .tax(tax)
+                    .total(total)
+                    .status(InvoiceStatus.ISSUED)
+                    .active(true)
+                    .build();
+
+            invoices.add(invoice);
+        }
+
+        if (!invoices.isEmpty()) {
+            invoiceRepository.saveAll(invoices);
+            log.info("DataInitializer: {} invoices creadas.", invoices.size());
+        } else {
+            log.info("DataInitializer: no hay invoices nuevas para crear.");
+        }
+    }
+    @Transactional
+    private void createMovementsIfNotExist() {
+        long existing = movementRepository.count();
+        if (existing > 0) {
+            log.info("DataInitializer: movements ya existen (count={}), omitiendo inicialización de movements.", existing);
+            return;
+        }
+
+        if (this.products == null || this.products.isEmpty()) {
+            this.products = productRepository.findAll();
+        }
+        if (this.inventories == null || this.inventories.isEmpty()) {
+            this.inventories = inventoryRepository.findAll();
+        }
+        if (this.users == null || this.users.isEmpty()) {
+            this.users = userRepository.findAll();
+        }
+        if (this.orders == null || this.orders.isEmpty()) {
+            this.orders = orderRepository.findAll();
+        }
+        if (this.dispatchers == null || this.dispatchers.isEmpty()) {
+            this.dispatchers = dispatcherRepository.findAll();
+        }
+
+        if (products.isEmpty() || inventories.isEmpty() || users.isEmpty()) {
+            log.warn("DataInitializer: faltan entidades para crear movements. products={}, inventories={}, users={}",
+                    products.size(), inventories.size(), users.size());
+            return;
+        }
+
+        List<Movement> toSave = new ArrayList<>();
+
+        for (int i = 0; i < products.size(); i++) {
+            Product p = products.get(i);
+            Inventory inv = inventories.stream()
+                    .filter(it -> it.getProduct().getSku().equals(p.getSku()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (inv == null) {
+                log.info("DataInitializer: no hay inventory para product {}, omitiendo movement.", p.getSku());
+                continue;
+            }
+
+            User u = users.get(i % users.size());
+            Order order = orders.isEmpty() ? null : orders.get(i % orders.size());
+            Dispatcher d = dispatchers.isEmpty() ? null : dispatchers.get(i % dispatchers.size());
+
+            MovementType type = (i % 2 == 0) ? MovementType.ENTRY : MovementType.EXIT;
+            BigDecimal qty = BigDecimal.valueOf(5 + (i % 20)); // cantidades plausibles
+
+            // Idempotencia: evita duplicados por inventory+product+order+type+quantity+createdAt aproximado
+            boolean exists = movementRepository.existsByInventoryAndProductAndOrderAndTypeAndQuantity(
+                    inv, p, order, type, qty
+            );
+            if (exists) {
+                log.info("DataInitializer: movement ya existe para product {} inventory {} tipo {}, omitiendo.",
+                        p.getSku(), inv.getId(), type);
+                continue;
+            }
+
+            Movement m = Movement.builder()
+                    .type(type)
+                    .inventory(inv)
+                    .product(p)
+                    .quantity(qty)
+                    .user(u)
+                    .order(order)
+                    .dispatcher(d)
+                    .motive(type == MovementType.ENTRY ? "Ingreso inicial de " + p.getName() : "Salida inicial de " + p.getName())
+                    .active(true)
+                    .build();
+
+            // Ajustar inventario en memoria antes de persistir
+            if (type == MovementType.ENTRY) {
+                inv.setAvailableQuantity(inv.getAvailableQuantity().add(qty));
+            } else { // EXIT
+                BigDecimal available = inv.getAvailableQuantity();
+                BigDecimal newAvailable = available.subtract(qty);
+                if (newAvailable.compareTo(BigDecimal.ZERO) < 0) {
+                    // No forzar negativo: ajustar a cero y registrar advertencia
+                    log.warn("DataInitializer: intento de salida mayor que disponible para inventory {} product {}. available={}, requested={}. Ajustando a 0.",
+                            inv.getId(), p.getSku(), available, qty);
+                    inv.setAvailableQuantity(BigDecimal.ZERO);
+                } else {
+                    inv.setAvailableQuantity(newAvailable);
+                }
+            }
+
+            toSave.add(m);
+        }
+
+        if (!toSave.isEmpty()) {
+            // Guardar movimientos y luego persistir los inventarios actualizados
+            movementRepository.saveAll(toSave);
+            inventoryRepository.saveAll(inventories); // persiste los cambios de cantidades
+            log.info("DataInitializer: {} movements creados y {} inventories actualizados.", toSave.size(), inventories.size());
+        } else {
+            log.info("DataInitializer: no hay movements nuevos para crear.");
+        }
+    }
+
 }
