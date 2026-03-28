@@ -88,19 +88,19 @@ public class DataInitializer {
 
         users = new ArrayList<>(List.of(
                 User.builder().name("Andrés").surname("Arias").phoneNumber("3104000001")
-                        .email("andres.arias@sigi.com").password(encodedPassword).role(roleAdmin).active(true).build(),
+                        .email("admin@sigi.com").password(encodedPassword).role(roleAdmin).active(true).build(),
 
                 User.builder().name("María").surname("López").phoneNumber("3104000002")
-                        .email("maria.lopez@sigi.com").password(encodedPassword).role(roleWarehouse).active(true).build(),
+                        .email("warehouse@sigi.com").password(encodedPassword).role(roleWarehouse).active(true).build(),
 
                 User.builder().name("Juan").surname("Ramírez").phoneNumber("3104000003")
-                        .email("juan.ramirez@sigi.com").password(encodedPassword).role(roleSeller).active(true).build(),
+                        .email("seller@sigi.com").password(encodedPassword).role(roleSeller).active(true).build(),
 
                 User.builder().name("Catalina").surname("Pérez").phoneNumber("3104000004")
-                        .email("catalina.perez@sigi.com").password(encodedPassword).role(roleAuditor).active(true).build(),
+                        .email("auditor@sigi.com").password(encodedPassword).role(roleAuditor).active(true).build(),
 
                 User.builder().name("Diego").surname("Martínez").phoneNumber("3104000005")
-                        .email("diego.martinez@sigi.com").password(encodedPassword).role(roleDispatcher).active(true).build(),
+                        .email("dispatcher@sigi.com").password(encodedPassword).role(roleDispatcher).active(true).build(),
 
                 User.builder().name("Laura").surname("Gómez").phoneNumber("3104000006")
                         .email("laura.gomez@sigi.com").password(encodedPassword).role(roleSeller).active(true).build(),
