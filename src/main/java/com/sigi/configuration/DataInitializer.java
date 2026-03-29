@@ -1,4 +1,4 @@
-package com.sigi.configuration;
+/* package com.sigi.configuration;
 
 import com.sigi.persistence.entity.*;
 import com.sigi.persistence.enums.InvoiceStatus;
@@ -769,4 +769,4 @@ public class DataInitializer {
         }
     }
 
-}
+}*/
